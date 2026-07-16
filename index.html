@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover: the canvas extends under notches/home indicators;
+         HUD elements inset themselves via env(safe-area-inset-*) below. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="Orbits — An orbital slingshot puzzle game" />
+    <meta name="theme-color" content="#0a0a1a" />
+
+    <!-- PWA manifest link is injected by vite-plugin-pwa at build time. -->
+
+    <!-- iOS PWA support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Orbits" />
+    <link rel="apple-touch-icon" href="/orbits-playtest/icons/apple-touch-icon-180x180.png" />
+
+    <!-- SVG favicon (scales cleanly) with ICO fallback -->
+    <link rel="icon" type="image/svg+xml" href="/orbits-playtest/icons/icon.svg" />
+    <link rel="icon" href="/orbits-playtest/icons/favicon.ico" sizes="48x48" />
+
+    <title>Orbits</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Safe-area insets exposed as custom properties so the game can read
+         them via getComputedStyle (src/utils/safeArea.ts) and inset the
+         canvas-rendered HUD. Requires viewport-fit=cover to be non-zero. */
+      :root {
+        --safe-area-top: env(safe-area-inset-top, 0px);
+        --safe-area-right: env(safe-area-inset-right, 0px);
+        --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-area-left: env(safe-area-inset-left, 0px);
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        /* iOS Safari: 100% under-measures while the dynamic toolbar is
+           collapsed, leaving a dead gap at the bottom in portrait; dvh
+           tracks the real visible viewport. (Fallback above for browsers
+           without dvh support.) */
+        height: 100dvh;
+        overflow: hidden;
+        background: #0a0a1a;
+        font-family: system-ui, sans-serif;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #game-canvas {
+        display: block;
+        /* Canvas dimensions are set programmatically in main.ts */
+        width: 100%;
+        height: 100%;
+        touch-action: none; /* Prevent default touch scroll/zoom — handled in input.ts */
+        cursor: crosshair;
+      }
+    </style>
+    <script type="module" crossorigin src="/orbits-playtest/assets/main-BRGmpqVL.js"></script>
+  <link rel="manifest" href="/orbits-playtest/manifest.webmanifest"></head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas" aria-label="Orbits game canvas"></canvas>
+    </div>
+  </body>
+</html>
